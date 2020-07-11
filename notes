@@ -1,0 +1,43 @@
+
+SASS:
+- uses the file extension .scss. With a few small exceptions, it's a superset of CSS, which means essentially all valid
+CSS is valid SCSS
+
+- nesting rules are super helpful but the deeper the nest the more bandwidth we are using to serve the CSS and the more work
+it takes the browser to render it. it is important to keep the selectors shallow
+- browsers do not understand Sass, or any other css preprocessors. In order to be able to use Sass in the code. we need
+something to turn Sass code into CSS code so that the browser can understand it. One tool that compiles our Sass is Webpack
+- you can define variables that cen be peppered across multiple css files
+
+VARIABLES:
+- variables can hold a variety of data types.
+- variables are defined by a $ immediately preceding the name of the variable and a colon separating the name of the
+variable from the value.
+
+    $main-color: blue;
+
+- that is how you define a variable. then we can use it by just adding it to whatever we want like we would normally do in
+CSS
+
+
+- nesting can have a strain on your bandwidth and the specificity. Try to avoid overly using nesting
+
+
+CSS STYLE CONFLICTS:
+- there are 3 things when styles conflict.
+1) the stylesheet origin:where the style sheel is coming from
+2)selector specificity
+3) source order
+
+-user agent style sheets are the styles that the browser applies, they have lower priority, so our styles override them.
+- the inline styles will override any declaration applied from our stylesheet.
+- don't use IDs in the selector, they ratchet up the specificity a lot.
+- don't use !important, this makes the specificity highest it can be and we will have to keep using !import whenever we want
+to change something on that elemnent.
+
+- then we are going to use  transition to make the image slider.
+
+
+REACT SPRING USESPRING:
+- so we are going to go the re-render the component with changed props. this is where we set a props variable to the an
+object that is set the useSpring() method
