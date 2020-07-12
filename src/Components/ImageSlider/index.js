@@ -1,14 +1,28 @@
-import React from 'react'
+import React,{useState} from 'react';
+import {useTransition,animated} from 'react-spring';
+
 
 
 const ImageSlider =()=>{
-      const images =[
-        'https://images.unsplash.com/photo-1497271679421-ce9c3d6a31da?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1651&q=80',
-        'https://images.unsplash.com/photo-1527631746610-bca00a040d60?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=668&q=80',
-        'https://images.unsplash.com/photo-1504703395950-b89145a5425b?ixlib=rb-1.2.1&auto=format&fit=crop&w=702&q=80'
-      ]
+      const [images,setImages] =useState([
+        {img:'https://image.tmdb.org/t/p/w500/xnAdZe8wg9aeRSxcJksPlGk68cL.jpg',key:0},
+        {img:'https://image.tmdb.org/t/p/w500/27IQ08XLxw2Gaj5zoOmJWmq4nNy.jpg',key:1},
+        {img:'https://image.tmdb.org/t/p/w500/xJHokMbljvjADYdit5fK5VQsXEG.jpg',key:2}
+      ])
+
+      const transitions = useTransition(images[0],image => image.key,{
+        from:{opacity:0,'background-image':'image.img'},
+        enter:{opacity:1,'background-image':'image.img'},
+        leave:{opacity:0,'background-image':'image.img'},
+        config:{duration:1000}
+      })
   return(
     <div className='image-slider-contianer'>
+      {
+      transitions.map(({item,key,props})=>{
+          return <animated.img key={key} src={item.img} alt='interstellar' style={props}></animated.img>
+        })
+      }
 
     </div>
   )

@@ -38,6 +38,158 @@ to change something on that elemnent.
 - then we are going to use  transition to make the image slider.
 
 
+RESPONSIVE IMAGES:
+- in responsive design, images need special attention, to make sure that they fit on the screen and to
+consider the bandwidth of mobile users. when using images, we should make sure that they are well
+compressed. User a tool for that.
+
+- the best practice is to create a few copies of an image, each at a different resolution.
+
+EMS AND REMS:
+- ems, are the most common relative length unit, are a measure used in typography, refering to a
+specified font size. in CSS, 1 em means the font size of the current element; so the em relies on the
+size of the element that it is being placed on
+
+
 REACT SPRING USESPRING:
 - so we are going to go the re-render the component with changed props. this is where we set a props variable to the an
 object that is set the useSpring() method
+
+CREATING THE NAVBAR CLICK DETECTION:
+-so we know what we are going to use the a dom ref, that is for sure.
+- we are going to add a useEffect hook to add the click event to the document and we are also going to
+make sure that useEffect returns a function so that it cleans up the function. we have to return a function
+when it is a click that requires a clean up, this makes sure that we don't get a memory leak.
+
+EFFECTS WITH CLEANUP:
+- some effects require a cleanup like setting up a subscription to some external datasource. it is important
+to clean up so that we don't introduce a memory leak.
+- so if useEffect returns a function react will run it when it is time to clean up.
+
+-an update can be caused by changes to props or state.
+
+- we are going to use the useRef to get the hook value.
+- so now we are working on the API.
+
+API AUTHENTICATIONS:
+-the application level authentication on this is controleld by either a single query parameter, api_key,
+or by using the v4 access token as a Bearer token.
+-for our applications authentication we are going to use the api_key authenticaiton
+
+- an API read access token is expected to be sent along as a Authorization header
+- user authentication is controlled with a session_id query parameter. you can generate a session_id
+by following these steps
+1) create a new request token
+2) get the user to authorize the request token
+3) Create a new session id with the authorized request token
+
+- there are also guest sessions. they just have limited permissions as they can only rate a movie, tv show and
+tv episode. Creating a guest session is as simple as calling the new guest session method.
+
+- the first thing that we want to get are some images
+
+IMAGES:
+-movie, TV and person objects contain references to different file paths. In order to generate a fully working
+image URL, you'll need 3 pieces of data. those are the base_url, a file_size and a file_path
+- so we need the right image urls from movies that we want, so we have to try and find out how to get the
+movies that we want.
+
+MOVIES:
+- so we make a get request to /movie/{movie.id} and apparently this supports something called Append to
+Response.
+- append_to_response is a query parameter and it makes it possible to make subrequests with the same namespace
+in a single HTTP request. Each request will get appended to the response as a new JSON object.
+
+- so now we have the image paths that we want but there are different sizes based on the screen length.
+- for the small screen we just want w500 but for the larger screen we want to have the original size.
+-so I need to figure out how that can be made possible. I assume we will have to do it with css perhaps
+because what I want to do is to create responsive images.
+- so the best practice is to have different copies of an image, each at a different resolution we should
+be able to use responsive techniques to serve each users with the appropriate screen size.
+
+SRCSET:
+- the media queries solve the problem when images are invluded via CSS, but what about the <img> tags. for this
+- we have to use a different approach, we use the srcset attribute, short for source set
+- the source set attribute is a newer addition to HTML. it allows us to specify multiple image URLs for one
+<img> tag and to specify the resolution for each. the browser will then figure out which image it needs and
+download that one.
+- to make sure that images don't overflow their container's width. make sure to set the max-width on the
+img tag to 100%
+-what should we do if an image is fixed size in pixels but we want to cater for screens of different
+density
+- if you don't specify the width and height of an image, the browser will display the image at its native
+width/height
+-in order for the browser to pick the right image, it needs to know
+
+1) URLS for the image at various sizes
+2) the decoded width of each of those resources
+3) the width of the <img>
+
+
+-ok well lets get atleast one image and see what it will look like, so I actualy think I can just create the
+image slider with react springs
+
+USETRANSITION:
+-feed the animated transition group your items, keys (which can bee null if the items are atomic), and lifecycles
+whenever itesm are added or removed, it will animate theses changes
+- so we are defiantly going to use this for the transition effects.
+- so the first thing that we are doing is create a list with useState. real quick lets go read up on useState.
+
+USESTATE HOOK:
+- what even is a hook. A hook is a special function that lets us 'hook into' React features. useState is
+a hook tha tlets us add React state to functional components. so we add a hook when we want to add some state
+to it.
+- when we call useState it declares a "state variable". this is a ways to "preserve" some values between
+the function calls. Normally variables "disappear" when the function exits but state variables are preserved
+by react
+- it returns a pair of values, the current state and a function that updated it.
+- so basically useState is a hook in React and hooks let us hook into React features, useState lets us preserve
+function state even after the function has been called. It returns two values, the current state and the
+function to update that state. this is about how fast I can.
+- there are also rules for hooks
+
+RULES OF HOOKS:
+-there are two rules that must be follow when using functions
+1) only call hooks at the top level, do not call hooks inside loops, conditions or nested functions.by
+following this rule, we ensure that Hooks are called in the same order each time a component renders, this is
+what allows React to correctly presece the state of Hooks between multiple useSTate and useEffect calls
+
+2)Only call hooks from React Functions.  do not call hooks from regular javascript functions.
+- we can also call them from custom React hooks
+
+-also when we use useState we are using array destructuring and that the names on the left are not part of the
+React API. so that means that we can name them what ever we want
+- the reason that we are able to name things whatever we want is because of array destructuring, it works on
+the index of the array instead of the named properties.
+
+- ok so now back to the useTransition
+
+USETRANSITION:
+- so the very first thing that we do is import {useTransition, animated} form 'react-spring'. once we have
+those imported.
+- second is we create some state with useState, make sure it is an array of objects with the image url
+for our case and also an id
+- now is where we use the useTransition to create the transition effect. we create a constant variable
+and set it equal to
+    useTransition(items,item=> item.key,{
+              from:{transition:<effectHere>},
+              enter:{transform:<effectHere>},
+              leave:{transform:<effectHere>}
+    })
+
+- in this the items will be what we set our state values name to be with useState, the item is refering to
+the item on the current rotation of the loop, think like how map or forEach works. the item.key is the key for
+the current item. the real animations occur in the object properties called from,enter and leave.
+-we put the animations that we want to take place in there, in our case it would be opacity
+
+- then we return the transitions and it appears to work just like map would.
+
+    transition.map(({item,props.key})=>{
+    <animated.div key={key} style={props}>{item.text}</animated.div>
+    })
+
+- so clearly we messed up somewhere because it is just rendering and not animating like it should
+- so there is definetly some extra javascript and index stuff going on that the spring team is not telling me about.
+- yep so definetly something extra that is going on with an index value to make sure that we only render one value.
+- but I can use this single image to practice some moving stuff. ok so lets start playing around with the css
+in order to get some cool stuff going.

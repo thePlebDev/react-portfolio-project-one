@@ -16,7 +16,7 @@ const NavBar = ()=>{
     if(!node.current.contains(e.target)){
       setshow(false)
     }else{
-      return 
+      return
     }
   }
 

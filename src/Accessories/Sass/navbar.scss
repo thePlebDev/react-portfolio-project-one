@@ -10,20 +10,21 @@ body{
   width: 100%;
   height: 100%;
   position: fixed;
+
 }
 
 
 nav{
-  border: 1px solid red;
+
   width: 100%;
   height: 60px;
-  background-color: blue;
+  background-color: #333c4e;
+  color: white;
 
 
 
   .logo{
     font-size: 40px;
-    margin-top: 5px;
     letter-spacing: 3px;
     margin-left: 40px;
   }
@@ -41,21 +42,22 @@ nav{
     justify-content: flex-start;
     overflow-y: hidden;
     transition: 300ms ease;
-    background-color: white;
-    opacity: 0.5;
+    background-color: #333c4e;
+    color: white;
+    opacity: 0.9;
 
 
     li{
 
       list-style: none;
       text-decoration: none;
-      font-size: 15px;
+      font-size: 20px;
       text-transform: uppercase;
       letter-spacing: 1px;
       font-weight: 500;
       margin-top: 40px;
 
-      color: black;
+      color: white;
     }
   }
   i{
