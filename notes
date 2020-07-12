@@ -193,3 +193,18 @@ the current item. the real animations occur in the object properties called from
 - yep so definetly something extra that is going on with an index value to make sure that we only render one value.
 - but I can use this single image to practice some moving stuff. ok so lets start playing around with the css
 in order to get some cool stuff going.
+- so right now I am just messing around with stuff. I should read a blog post or two and then try to play around.
+- so lets try to make the smooth image slider that is on the page
+
+- so what does transfor3d do?
+it is a function that repositions an element in 3d space
+
+-ok that image slider was actually pretty easy and looks pretty dope.
+- now lets just try to make useEffect to up the index, after every index, increase it should wait 5 seconds and then
+fire again
+
+- so the props that is added in the transitions.map(({item,props,key})), the props is coming from the
+transition variable that we defined earlier. I think that it is destructuring them. destructuring allows us
+to pull multiple pieces of data from an array or object and assign them to their own variables
+- in react we can destructure props. ya so we are definitely destructuring the props and pulling out the
+item(current item), props(current style), and the key(the id that we specified earlier).
