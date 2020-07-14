@@ -208,3 +208,101 @@ transition variable that we defined earlier. I think that it is destructuring th
 to pull multiple pieces of data from an array or object and assign them to their own variables
 - in react we can destructure props. ya so we are definitely destructuring the props and pulling out the
 item(current item), props(current style), and the key(the id that we specified earlier).
+
+- A React components lifecycle contains distinct phases for creation and deletion. these are called mounting and
+unmounting.  this is what is called "setup" and 'cleanup'
+
+
+MOUNTING:
+-in the mounting(DOM creation, or "setup") phase, we have access to two lifecycle methods. componentWillMount
+and componentDidMount. componentWillMount is now depreciated
+- componentDidMount is called only once, but immediately after the render() method has taken place. This is
+the method that is used to grab information from an outside source, just like useEffect.
+
+UNMOUNTING:
+- this is the deletion or cleanup phase, we can have just one lifecycle method to help us out: componentWillUnmount
+
+- so useEffect takes place of componentDidMount and componentWillUnmount
+- hooks let us Hook into react features like lifecycle methods
+- so if we don't put the dependency array, then it will be called every rerender of the component, if we give
+it an empty array, then it will run only on the first mounting of the component
+-so I think my effect would need a cleanup
+- so the useEffect is used to mock the componentDidMount and componentWillUnmount, so I should read up on those
+
+- so a component is invoked immediately before a component is unmounted and destroyed. Perform any necessary
+cleanup in this method like invalidating timers, canceling network requests, or cleaning up any
+subscriptions.
+- so I think I need to read up on how setInterval works and how the division worked on this one.
+
+SET-INTERVAL:
+-inside the React component allows us to execute a function or some code at specific intervals.
+- so the standard thing looks like we create a constant variable and call it interval and then set the
+interval to the setInterval function. After that we call clearInterva(interval) and this will clear up the
+event
+- so the way that we stop an interval is by calling clearInterval()
+- we combind this with the empty dependency array, meaning that the interval is correctly cleared and
+no longer triggers every second after the component unmounts from the DOM
+- ours works thanks to the % operator. lets read up on that a bit. then we should see if we can get the
+image slider to get info from the api instead of just these pre set images.
+
+THE % OPERATOR:
+- this is called the modulus operator and it is used to return the remainder of the division. we use
+it like this.
+                const interval = setInterval(()=>{
+                  setIndex((index)=>(index +1)% images.length)
+                })
+
+- the use of the module operator is what gives us the ability to do this without the if statements that I
+was using before.
+- then after we have that we call the cleanInterval(interval). calling this function means that we don't have
+to worry about memory leaks.
+- so lets make a call to api to get movies at are now playing.
+- so i guess I really do have to read up on Api calls about react
+- ok I think we should lay off of the dynamic images
+- we should work on the scrolling slides next
+
+CREATING THE IMAGE SCROLLER:
+-So I think what has to happen is that we are going to have the image slider on one side layed out across the
+screen and then have the overflow-X set to display none, so we are going to need a card, that card is going
+to need its own state about the title and everything, possibly the stuff for rating and what not.
+- so we are going to need a single compoennt for getting the images, lets call image scroller and then we want
+to get the data from the api then map over it and have the images each have there own state.
+- so lets get the images with an ap call first
+- are functional components in strict mode like Es6 classes?
+- so I dont think that they are because they are function just function expressions and function expressions
+are not called in strict mode. But that did lead me to something called strict mode in React. It seems
+like something that is worth exploring after this app is made.
+- so my width is not working and I guess it has soethign to so with the fact that display width changes
+the way that width work.
+- for determining the size of a flex item the final flex-basis bound by min-width and max-width is all that
+matters. so min-width and max-width is all that matters.
+- so I fixed the problem by taking off the parent elements width of 100%. I need to read more about width in
+order to understand it better. Min width and max-width are saying that at most it will be something
+and at least it will be something else
+- when we are using % for widths, the precentage is based ont he element's parent, or in other words, the
+width of containing block
+-box-sizing: border-box lets us avoid many problems inherit in using width 100%. the border-box makes sure
+that padding is factored into the width of our elements.
+- a block element by default will expand by defualt to fit the width of its containing or parent element. minus
+any margin or padding.
+- when you give an element a width of 100% in CSS, your basically saying "make this element's content area
+exactly equal to the explicitly width of its parent but only if the parent has an explicit width"
+- so on our image slider container we have a width set to 100%, then inside of that we have a div called
+image-scroller-container and we don't have to set the div to 100%  because block level elements are
+- so if no width is set, it will naturally to fill its parent container and can have margins and/or padding
+- if no height is set on a div element, it will expand naturally to fit its child elements , so it
+is not necessary to give it a set width or to give it a width of 100%, if you want to fill its parent
+horizontally. In fact, doing either of those things may cause maintainability issues or other undesirable
+problems.
+-so our divs must automatically expand to fit the width of their parent elements. interesting and that
+width of 100% can cause some wierd issues, lets start to see how we want out cards to look.
+- so right now I want to make a progression bar for the amount of
+- so now I have to think a little more abstractly and we are just going to delete the image slider all together.
+
+
+- so lets try to add some kind of growing animation to it.
+- ya we are definetly to to use useSpring because we are going to have it toggle to some state.
+
+- we know that we have to import animated and useSpring but what else do we have to do.
+- so we can either overwrite the values or change the animation. we are going to go with the toggle of the properties,
+I think if we set the height and width to 0 then we should be able to get a growing animation from it.
