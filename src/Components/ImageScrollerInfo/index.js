@@ -1,10 +1,10 @@
 import React,{useState} from 'react';
+import {useSpring,animated} from 'react-spring';
 
 
 const ImageScrollerInfo =({poster_path,title,release_date})=>{
 
   const [state,setState] = useState(false)
-
   const handleClick =()=>{
     setState(!state)
   }
@@ -18,9 +18,9 @@ const ImageScrollerInfo =({poster_path,title,release_date})=>{
             <i className="fas fa-ellipsis-v"></i>
         </div>
 
-      {
-        state?
-          <div className='modal-container'>
+        {  state
+            ?
+          <div  className='modal-container'>
                   <div className="modal-info-containers">
                     <div className="icon"><i className="fas fa-list"></i></div>
                     <div className='icon-title'>Add to list</div>
@@ -42,7 +42,8 @@ const ImageScrollerInfo =({poster_path,title,release_date})=>{
                   </div>
           </div>
           :''
-      }
+        }
+
         <div className='item-info'>
           <div className='item-title'>{title}</div>
           <div>{release_date}</div>

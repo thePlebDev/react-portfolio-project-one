@@ -3,6 +3,7 @@ import {Link,Switch,Route} from 'react-router-dom'
 
 import NavBar from '../NavBar';
 import Home from '../../Pages/Home';
+import Login from '../../Pages/Login'
 
 
 const App = ()=>{
@@ -12,6 +13,7 @@ const App = ()=>{
       <NavBar />
       <Switch>
         <Route exact path="/"component={Home} />
+        <Route exact path="/login"component={Login} />
       </Switch>
     </div>
   )

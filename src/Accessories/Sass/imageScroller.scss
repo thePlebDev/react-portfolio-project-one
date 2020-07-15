@@ -45,10 +45,12 @@ div.image-scroller{
       .modal-info-containers{
         display:flex;
         border-bottom: 1px solid black;
+        align-items: center;
         padding: 5px 10px;;
 
         .icon{
           margin-right: 5px;
+          font-size: 10px;
         }
         .icon-title{
           opacity: 0.7;
