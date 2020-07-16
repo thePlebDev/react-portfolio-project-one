@@ -3,7 +3,11 @@ import React from 'react';
 import ImageScroller from '../../Components/ImageScroller';
 
 
+
+
 const Home =()=>{
+
+
   return(
     <div>
       <ImageScroller stream_type={'popular'} name={'Popular'} />
