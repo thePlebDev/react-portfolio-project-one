@@ -1,4 +1,18 @@
 div.star-container{
 width: 25px;
+margin-left: 3px;
+height: 30px;
 
+}
+
+div.star-super-container{
+  margin-top: -20px;
+}
+
+.star-rating-filled{
+  fill:gold;
+}
+
+.star-rating-blank{
+  fill: #d8d8d8;
 }

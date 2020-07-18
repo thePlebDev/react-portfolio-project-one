@@ -6,6 +6,8 @@ import Star from '../Star'
 const ImageScrollerInfo =({poster_path,title,release_date,info})=>{
 
   const [state,setState] = useState(false)
+  const [rating,setRating] = useState(0);
+  const [hoverState,setHoverState] =useState(0)
   const stars = [1,2,3,4,5]
   const handleClick =()=>{
     setState(!state)
@@ -31,7 +33,12 @@ const ImageScrollerInfo =({poster_path,title,release_date,info})=>{
                   <div className='star-super-container'>
                     {
                       stars.map((star,index)=>{
-                       return <Star key={index} />
+                       return <Star key={index}
+                                starId={index}
+                                rating={hoverState || rating}
+                                onMouseEnter={()=>setHoverState(index)}
+                                onMouseLeave={()=>setHoverState(0)}
+                                onClick={()=>setRating(index)}/>
                       })
                     }
 
