@@ -36,16 +36,16 @@ div.image-scroller{
       background-color: #fff;
       border-radius: 5px;
       position: absolute;
-      width: 120px;
-      height: 140px;
+      width: 140px;
+      height: 100px;
       right: -15px;
       top: 36px;
       z-index: 9999;
 
       .modal-info-containers{
         display:flex;
-        border-bottom: 1px solid black;
         align-items: center;
+        border-bottom: 1px solid black;
         padding: 5px 10px;;
 
         .icon{
@@ -89,5 +89,9 @@ div.image-scroller-container{
     margin-left: 40px;
     letter-spacing: 2px;
     font-family: 'Source Sans Pro', Arial, sans-serif;
+  }
+
+  .star-super-container{
+    display: flex;
   }
 }

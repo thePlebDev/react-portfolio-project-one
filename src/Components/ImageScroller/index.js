@@ -4,7 +4,7 @@ import axios from 'axios'
 import {API} from '../../API/key'
 import ImageScrollerInfo from '../ImageScrollerInfo'
 
-const ImageScroller = ({stream_type,name})=>{
+const ImageScroller = ({stream_type,name,token})=>{
   const [data,setData] = useState()
   const [isLoading,setIsLoading] = useState(true)
   useEffect(()=>{
@@ -31,7 +31,9 @@ const ImageScroller = ({stream_type,name})=>{
                         <ImageScrollerInfo
                             poster_path={item.poster_path}
                             title={item.title}
-                            release_date={item.release_date} />
+                            release_date={item.release_date}
+                            token={token}
+                            info={item.id} />
                     </div>
                )
              })

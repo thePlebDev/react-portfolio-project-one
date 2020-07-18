@@ -306,3 +306,389 @@ width of 100% can cause some wierd issues, lets start to see how we want out car
 - we know that we have to import animated and useSpring but what else do we have to do.
 - so we can either overwrite the values or change the animation. we are going to go with the toggle of the properties,
 I think if we set the height and width to 0 then we should be able to get a growing animation from it.
+- so the animation is being a little weird on me, might be some kind of event bubbling. So I will not be implementing
+that right now.
+- now I am going to implement the ref to close the documents and then work on the authentication
+
+AUTHENTICATION:
+- authentication is outlined in these steps
+1) create a new request token
+2) get the user to authorize the request token
+3) Create a new session id with authorized request token.
+
+step one:
+- the first step is to create a request new token. This is a temporary token that is required to ask the user
+for permission to access their account. this token will auto expire after 60 minutes if it is not used
+- so its a simple get request to /authentication/token/new
+
+- the basics to getting a user authenticated look like this.
+1) create a new request token
+2) Get the user to authorize the request token
+3) create a new session id with the authorized request token
+
+- so it all starts with getting a request token. so how do we do that
+
+1) GETTING THE REQUEST TOKEN.
+- this is literally just making a get request to /authentication/token/new and on the respone there will be a request token
+-ok so we got that
+
+2) ASKING THE USER FOR PERMISSION
+- so this also seems pretty simple just have to redirect the user to page on the movie DB site and it will do the
+authentication for us.
+
+3) CREATING A SESSION ID
+-then we call a new session method with the request token that had been approved by the user in step 2 we will return
+a new session_id. This is the session that can now be used to write user data. You should treat this key like a
+password and keep it secret.
+-calling a session method just means making a post request to /authentication/session/new
+- that can be used to create a fully valid session id.
+- we need to send it an api key and the authenticated request token in the request boby.
+
+- so thw whole thing seems pretty straight forward and  a lot simpler than what I had expected. first we make a
+request for a request token. then we redirect the user to loging on the movieDB site, then now have an approved
+request token and this token can now be used to create a session id. that is make by making a post request to
+/authenticate/session/new. in the request we send the api_key as a query string and the request token in the
+request body. the response is a string called the session_id.
+
+- so my biggest concern is how and where do I store all of these session_id and request token, do I just store them
+inside of react or use the client side storage, not 100% sure. I guess I will have to do some reasearch.
+
+                                CLIENT SIDE STORAGE
+
+COOKIES:
+- cookies are the earliest form of client-side storage commonly used on the web. the large number of security
+problems and its inability to store complex data make it unsuitable for use today
+
+WEB STORAGE API:
+- the two main web storage types contained within two structures inside the browser: local storage and session storage.
+- local storage persits data still after the browser is closed and then reopened, and the second one persists data while
+the browser is closed and the second one persists while the browser is open
+
+SECRET KEYS IN REACT:
+- so if we want actual keys to be served, but to remain hidden with client code, that can't happen. you can't hide
+anything that you give to the client. we will need to use something like JWT where the server controls the means
+of authentication. Ok, so maybe I should be using JSON web tokens
+
+- JWT is for authorization, not authentication. authentication is when you are taking in a password and username, to make
+sure that the username and password is correct. this is what is done when a user is logged in.
+-authorization is making sure that the user that is logged in is the same user that is making the requests. it is
+authorizing that this user has access to this kind of authentication
+
+- so looks like the server creates a JSON web token when the user logs in. the user will log in by making a post to
+a server. the server will then do the authentication to make sure that the user is correct.
+-ok  so ya I wont be creating a JWT, the session id is what the server creates and then gives to us to authorize
+the user on what he needs to use.
+- so I think that I am just going to store the value in React for right now.
+- so I need a login in link that will send a get request to get the new_token. then a login button on that will
+redirect the user to login with movie db and then ot return the session id that we will use to create post
+requests on behalf of the user. That should not be too hard.
+- so lets go over the steps again.
+
+1) first we create the request token by making a get request to /authentication/token/new
+- the response that we want is the request_token
+
+2) get the user to authorize
+- this is when we have to redirect the user to the login page on movieDB. the url will have the request token in it
+- the request token that has been used is now been approved and can be used to create a session id
+
+3) create a session id
+- to create a session id we need to call a session method. the session method is just a post request to
+/authenticate/session/new. it will return a session_id and we will use that to allow our app to make requests
+on behalf of the user
+
+- now I have a clear picture of that to do
+-so we want to make a login page that automatically sends a request to get a request token once the page loads.
+- so we have the token we now have to redirect the user to login page on the MovieDB site. I want to read up on
+how this works exactly.
+ actually we are probably going to want to raise that state up quite a bit so we can do things with it
+ -ya so we are going to want to make the session id global state
+ - so I think that we are going to have to raise the state and then when we get the request back we are going to update
+ the state and have that state then call the session method.
+ - lets read about useReducer to see if it can help at all.
+
+ UseReducer:
+ - it is an alternative to useState. Accepts a reducer of type (state,action) => newState, and returns the current
+ state paired with a dispatch method.
+ - useReducer is usually-preferable to useState when you have complex state logic that involves multiple sub-values
+ or when the next state depends on the previous one. useReducer also lets us optimize performace for components that
+ trigger deep updates because you can dispatch down instead of callbacks. so when we have deep prop drilling or
+ we have to send props data up to the parent we should think about using useReducer but for right now, we do not
+ need to use it.
+
+-so I guess for right now we should have some callbacks
+- well first lets figure out how to redirect the user once they click login with MovieDB
+- I think it is called programmatic navigation
+
+- so looks like we can use the redirect component, the blog post says that this is the recommended way to navigate
+other than the <Link>
+
+REDIRECT COMPONENT:
+- the easiest way to redirect to a new location is y usig its redirect component. When the component is rendered
+the existsing location of the history object is replaces with a new location. if you don't want to override
+the existing history location, including the push property will push a new entry onto the history
+- the easiest way is to use the Redirect component. when this component is rendered, the history object is replaced
+with a new location.
+- so we are going to import redirect and we are going to have the redirect component to be inside of our condional
+rendering
+- so an external link with react Router does not work, it just creates a memory leak, so I need to find something else
+to try.
+
+REDIRECTING TO AN EXTERNAL URL WITHIN REACT-ROUTER-DOM:
+-to do this at the route level we simply need to render a function assigning the window.location to the new site
+and then the user is redirected.
+- damn so looks like I am going to be doing some big boy prop drilling
+- Rendering a redirect component will navagate to a new location. The new location will override the current
+history object. like server-side renders.
+- server side rendering, sends a fully rendered page to the client.
+- the history object is used for navigation.
+-the issue is that redirect is for internal links only.
+-----------------------
+- what we want is to use a component that uses window.location to force the browser to go to another page
+- so we want to create an inline component that uses the window.location to tell us where to redirect.
+-so we have to get the access token, authorize it and then call the session method with it and use the session_key
+that is returned to make the post requests.
+- so we are going to need the request token and the session_key to be stored on the frontend.
+---------------------
+
+-using local storage in functional components is a side effect which is best implemented with the useEffect hook
+- so in the use Effect hook would go, localStorage.setItem('myvalue',value) in our case the value is going to be
+the request token. this is to store the item, now we need to retrieve it.
+- to retrieve it we can set the value to a constant using use state
+          localStorage.getItem('myvalue') || ''
+
+- this should get our value if there is one and if there is not then we just set the value to an empty string
+- that was localStorage which persists data for longer we want. we want data just for the page being open
+-session storage is used the same way as cache storage
+- we could also use this storage to save the data of a search if you search for something multiple times. We can
+worry about cahcing later, for now lets just try to get the the user token and make a session key.
+- this whole redirect thing has been for not because I literally just could of used the fricken Link component
+
+- ok so I have the login working. Now I have to get the session_key working
+- so it looks if the page from step 2 is redirected with a custom url it will have a authentication-callback
+header that can be used for step 2
+
+AUTHENTICATION VS AUTHORIZATION:
+-authentication means that we only want to identify the user who's trying to log into an application. It's a
+way of identifying the users to make sure they are who they are claming to be
+- so authentication is just checking to see if the user can log in or not, when we see authentication think user login
+-authorization is checking to see if a user is authorized to do something like a post request to a server. this
+is the part that I am having trouble with. the ability to check if someone is allowed to do something
+- we should have a token or something during the authentication process
+- so everytime the homepage loads I want to make a post request to the movidb to create a session token
+
+- so I found the authentication/token/validate_with_login and it will allow me to validate the login with
+a login page on my app
+- so right now I get to create a form with some validation and all the typical form jazz.
+- there was also the snazzy form validation tutorial on you tube that I could try to watch again.
+- ok  but first lets try to create it ourself.
+- so the first thing that we are going to do is create a controlled form with 'controlled' inputs.
+
+CREATING THE CONTROLLED FORM:
+- when I am going setValues({...values}) I am saying that I want react to put all the values in the object as single
+properties. I am saying that we should 'spread' them into the object with the spread operator.
+- then I am going to replace the values
+
+- creating the controlled component is pretty straight forward, all we have to do is create a form and then have the
+inputs have their on change value to be set to the react state values, this is what creates the 'controlled' component
+- the next thing that we are going to create is a custom react hook, this will allow us to abstract the validation
+and make it so we can use it for other things
+- the important thing to remember when creating a custom hook, is that we have to return an interface of whatever values
+are needed, in this case it is going to be the handleChange,handleSubmit,values and errors
+- another important thing to remember is that you have to also import the custom hook and then destructor
+the values that come from the importing and running for the custom hook.
+- now we have to deal with the errors, we need to have a state that deals with errors, we need to have a
+function that can validate and return errors and we need to pass these errors back to the form
+- to validate the errors we will create a new file that checks if everything is valid or not. all we
+want to check is that the username and password values are not empty
+- ok so now let go through how this submitting phase starts and ends
+
+ISSUBMITTING PHASE.
+ - this is the phase where we would do the api call or actually submit the function. this is the cleanest
+ section of all the code.
+ -so the first thing that we do is create a state called isSubmitting and we set the initial value to false
+ - we set this value to true in the onSubmit function after we set the setErrors with the validate function
+ - then we implement useEffect. put the errors state in the decency array to say that we want to run useEffect
+ whenever the errors state changes.
+ - inside the useEffect we want our api call to happen when ever the errors object is empty and the isSubmitting
+ is true. to check if an object is empty(error object) we can do Object.keys(errors).length === 0 if that
+ is true and if isSubmitting is set to true then
+
+ so what the heck is going on in our form?
+ - so the first thing that we are doing is make the form controlled, this means making all the input values
+ 'report' to a 'single source of truth'. then we can create the custom Hook that will deal with the
+ validation.
+ - in the custom Hook we will deal with the states of the values from our inputs and the state of the errors,
+ also the handleSubmit and the handleChange function. so inside this custom Hook function (useForm) we will
+ return values,errors,handleChange and handleSubmit.
+ - once we have the handleChange funciton set up and it is able to update and store the proper values, we can
+ set up the errors, the errors have their own state called errors.
+ - the actual validation will happen in another file called validate, this is where we can actually do the
+ validation on the values.
+ - the first thing that we should do in this function is to create an errors object and return it.
+ more about this later
+ - the function that will be doing the checking is called validate and it will accept one parameter called
+ values. this will be the values of the inputs that we pass it
+ - it will then use values.username and values.password to run checks on them. for this app we are only going
+ to make sure that they are not blank.
+ - if either of the values are blank then we want to update the errors object with error.username ='Required'
+ and or error.password = 'Required'.
+ -we will return the error object whether it is empty or not.
+ -the validate function will be called by the setErrors(validate(values)) this will update the errors state
+ - after setErrors is called in the onSubmit() function we need to call isSubmitting
+ - isSubmitting is a state that we are going to set up with the help of useState and initilize its value to
+ false. this value will come into play later with useEffect()
+ -so in the onSubmit() function we have called the setErrors(validate(values)) to get the errors and then directly
+ after that we are going to call setIsSubmitting(true)
+ - the last part that we are going to do is to create an useEffect() hook and we are going to give it the errors
+ state in the dependency array [] so that the function only runs when the error state changes.
+ - inside of useEffect() we want to check if the errors state is empty and that isSubmitting is true, if it
+ is then we can run our api call. so to check if the errors object is empty we are going to do
+      Object.key(errors).length ===0 && isSubmitting
+ - above checks to make sure that there are no errors and then isSubmitting is set to true. if it is then we
+ can run the api call, if it isnt then nothing and errors should be shown to the user
+ - so in our hook we have to make sure that we return values, errors, handleChange and handleSubmit. On the
+ component page we are going to have to deconstruct all of those things and make sure that they go in the
+ right spots.values should be with the values on the inputs, errors where ever you want to show them and
+ handleChange on the inputs and handleSubmit on the form.
+
+ CREATING THE FORM AND VALIDATION ALL BY MYSELF:
+ part 1 controlled component:
+ - first thing is to create the form a controlled component.
+ - when we are setting the state for the values hook , we have to remember to use the spread operator to
+ make sure that all the previous values of that state get individually merged in because React does not automatically
+ merge things, instead it overwrites them, so if we do not use the ES6 spread operator(...) our previous states
+ will get overriden(no bueno)
+- when setting the values state make sure that you go [name]:value. otherwise javascript will just think name an
+identifier and will set the name as the key and not the value of name.
+
+part 2 custom hook:
+- so now that we have the controlled component we are going to create a custom hook, to abstract some logic away and
+make things cleaner.
+- create a file called useForm. Inside that file create a function called useForm. make sure that use is the first
+word, this is how we can identify a hook and lets us see that the law of hooks applies.
+-in this function the logic we are going to abstract away is the values, onChange and onSubmit.
+- make sure that we return values,onSubmit and onChange.
+- then import the useForm hook into the component file and destructure the values that were returned by that function
+- now we can create the error state, this will be used once we create the acutal funciton that does the validating
+- the errors state can look exactly like the values state, make sure that it also gets returned
+
+part 3 validation:
+- this is the part that does the validating is done.
+- we will create another file and call it validate.js, in this side we will create a function called validate.
+- in this function we will create an object literal called errors and make sure that this is the only thing that
+is returned from this function.
+- the function will also take one parameter and that will be the values from the useForm hook.
+-for validating we are just going to  make sure that it is not empty. we just make sure the password and username
+are not empty, so values.password and values.password.
+-if the value is empty then we set the error object with that value and then return it
+
+part 4 is submitting:
+- this is the part that were we would actually do the api calling.
+- first we create a state called isSubmitting and set the initial value to false.
+- then after we use setErrors in our onSubmit function we are going to call setIsSubmitting(true)
+- then we are going to use the useEffect function. create the useEffect function and make sure it has the errors state
+in the dependency array. this means that useEffect will only run when the errors object changes.
+
+        Object.keys(errors).length === 0 && isSubmitting{
+          <make api call />
+        }
+
+-this will only run if there are no values in the error object and that isSubmitting is set to true
+- now that is is complete it is time to add a little style.
+- so now I need to make an api post request. with a request token, user name and password in the request body
+
+- I really need to read up on useEffect and what it actually is doing.
+
+useEffect:
+- so the dependency array means that the useEffect array should run only after a any of the values in the array
+changes. lets test that out. so ya, if you put something in the decency array, the useEffect is going to run after every
+time something in that array is updated.
+- so I should really start to think about code reuseability from now on and how I can make things more general and
+abstract the more specific stuff away, think like Legos.
+- proper conditional rendering
+- ok so now that we are able to log in and get the request token authenticated, we have to make the session call, I think
+this is what was giving me trouble last time, so lets hope that this time it is better.
+- still having troule with the session calls but I will set something up in react fist to test it to make sure that everything
+if it is me or what
+
+MAKING THE REQUEST CALL ON THE HOME PAGE:
+-The so when the page loads I want it to make a request with the request_token that is in the session storage and I only want
+it to run once, when the component loads so I will give the useEffect hook an empty dependency array.
+- then depending on the response we want the modals to respond in kind. if it is a valid response the modals should allow us to
+rate and do whatever to the movie that we have selected. All that will be more post requests. if the response is invalid,
+we want the modals to refer the user to log in.
+
+- well maybe for now we can just make a guest session
+- so making a guest session, is pretty easy, we make a call and then get back a guest session id, I assume that this id
+is what we are going to use for the post requests to rate movies.
+- now That I know how easy the authententication is, I think I am just going to delete the separate login page and just have a modal
+that does the same thing...
+
+- right now I want to make a search bar that will let us search whatever we type in, an sense we get unlimited requets, I am going
+to make it real time.
+- ok so lets look into creating the animation for the log in.
+- actualy I think that the Modal should be its own component. That would make the most sense.
+
+CREATING AGAIN WITH useSpring:
+-so the first thing is what we alread, know we have to import useSpring and animated
+- the next part is where we have choice we can choose from two methods to trigger the animation. the first method is to trigger
+an animation by a change of state, the second is to use a function. we are going to use the first one.
+- so when the state changes, that is when our animation is going to happen.
+- we are going to set the possible first and get it in line.
+- so I guess I am rewritting the whole mobile nav bar to useSpring animations.
+- first we need to import and then we need to create the props to be animatated
+- so the height and width bug that I have been dealing with only happens if you specify 0 as a number, to fix it just put
+'0px' and that will work
+- so maybe we jsut can't animate the margin, so lets try to animate using transform:translate
+
+- so now that I have the NavBar working like I want. I can create the log in as guest page. I want the login modal to
+be rendered in the home page because I want it to toggel a state that gets passed into each ImageScroller and have
+the ImageScroller modal pop up act accordingly to that state.
+
+-when the login button is clicked, I want it to toggel the state that is in the image scroller, that means I have to
+lift the state up.
+- so I think what we have happening is some event bubbling. Lets find out what event bubbling is.
+
+EVENT PROPAGATION:
+- Event propigation is an overacrching terms that includes 3 different phases of DOM Events: capturing, targeting and bubbling
+- so event propagation includes, targeting,capturing and bubbling. it includes targeting, bubbling and capturing. the first
+phase is capture, then targeting and the final phase is bubbling. the three phases of event progagation are captuing, targeting
+and then bubbling. the first phases is capturing, the second is targeting and the last is bubbling.
+
+event capturing phase:
+- when an event occurs in the DOM, notification of the event is passed starting at the top of the DOM tree and passing down
+through all parent element nodes all the way to the target node where the event occured. so basically. to capture the
+target event a notification of the event is passed all the way down to the event node.
+
+event target phase:
+-this phase only includes a notification of Node where the event took place. this is just a notifiction of where the event
+took place.
+
+event bubbling phase:
+-a notice os passed from the target Node all the way through the Parent node all the way back to the top root of the DOM
+
+EVENT BUBBLING:
+-this refers to the ability of evnet set on DOM nodes to 'bubble up' and also apply to ancestors nodes
+
+- so I guess nothing wrong was actually happening I had just made them output the same thing.... oh,well.
+
+- well I guess all of my extra notes got deleted...
+- ok well on creating the star. I think we are going to have to go with the svg to create the star becasue
+the font awesome  icon really isnt being that awesome right now. so now I will read up on svg iamges
+
+SVG:
+-so I guess a star can be created with a polygon inside of an svg state
+
+- I went back and created the stars with the normal font awesome star icon and now It is working. Now I
+just have to be able to use some animation to make the stars grow depending on the mouse position.
+
+- so right now I am thinking that we have an onMouseEnter event on all of the unchecked stars and we want to
+- increase the with of the check stars by 20 depending on what star we are on
+- so onClick we want the width and the z-index to change.
+- ok I think again I am going way off course with this code and it doesn't look like it is going to work like i want it to
+
+
+CREATING THE STAR RATING SYSTEM:
+-so my version was just trash and I could see alot of holes moving forward, so I have deleted it and I am now
+creating one from a youtube video.
+- the polygon stars that we have created are missing their left arm,we will have to look into that later

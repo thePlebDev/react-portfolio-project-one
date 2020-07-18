@@ -1,48 +1,43 @@
-import React,{ useState,useEffect,useRef } from 'react';
-import {useSpring,animated,config} from 'react-spring';
+import React,{ useState } from 'react';
+import {useSpring,animated} from 'react-spring';
 
 
 
 
-const NavBar = ()=>{
+const NavBar = ({changeToggle})=>{
   const [show,setshow] = useState(false)
-  const props = useSpring({opacity:show? 1:0,config:config.wobbly})
-  const node = useRef(null)
+//const [showModal,setShowModal] = useState(false)
+  //const node = useRef(null)
 
   const handleClick =()=>{
     setshow(!show)
-  }
-  const handleClickDetection =(e)=>{
-    if(!node.current.contains(e.target)){
-      setshow(false)
-    }else{
-      return
-    }
+    console.log('nav bar clicked')
   }
 
-  useEffect(()=>{
-    document.addEventListener('mousedown',handleClickDetection)
+  // const handleClickDetection =(e)=>{
+  //   if(!node.current.contains(e.target)){
+  //     setshow(false)
+  //   }else{
+  //     return
+  //   }
+  // }
+const dprops = useSpring({height: show ? '250px' : '0px',opacity:show?0.8:0})
+const linkprops = useSpring({transform: show? 'translate(0,10px)' : 'translate(0,-25px)',opacity:show?1:0})
 
-    return ()=>{
-      document.removeEventListener('mousedown',handleClickDetection)
-    }
 
-  },[])
 
   return(
-
         <nav>
           <div className="logo">Logo</div>
           <div onClick={()=>{handleClick()}}><i className="fas fa-bars"></i></div>
-          <ul className={show? '': 'navbar-close'} ref={node}>
-            <animated.li style={props}>Contact</animated.li>
-            <animated.li style={props}>About us</animated.li>
-            <animated.li style={props}>Blog</animated.li>
-            <animated.li style={props}>Ads</animated.li>
-            <animated.li style={props}>Gallery</animated.li>
-          </ul>
-        </nav>
+          <div >
+              <animated.div style={dprops} className='login-modal'>
+                <animated.div style={linkprops}>Contact</animated.div>
+                <animated.div style={linkprops} onClick={()=>{changeToggle()}}>Login</animated.div>
+              </animated.div>
+          </div>
 
+        </nav>
   )
 }
 
