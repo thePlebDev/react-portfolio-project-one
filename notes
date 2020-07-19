@@ -692,3 +692,93 @@ CREATING THE STAR RATING SYSTEM:
 -so my version was just trash and I could see alot of holes moving forward, so I have deleted it and I am now
 creating one from a youtube video.
 - the polygon stars that we have created are missing their left arm,we will have to look into that later
+- we are going to need a state of not filled,filled and we also need a way to hold on to the rating
+- we are going to need, useState and useEffect.
+- so far we have mapped over the star array and created a star for each value, the key is the index from the
+map method
+- we have created a rating stae and a hover state to hold their respected rating values
+- so onMouseEnter we want to set the hover index to the current value of the index, onMouseLeave we want
+to set the index value to 0. we should be able to use the overIndex to set the color classes.
+
+- so on mouse enter, we want to set the hoverState(index), this means that if we are on the fifth, star
+then the hover index gets set to 5.
+- then onMouseLeave we want to set the hoverState(0)
+- we then have an onClick function that we pass to the star and this will be how we set the rating of the
+star for us, it will also be where we make the api call.we will set the rating to be the same value as the
+index
+-finally we have a rating and this will be the rating that we are going to hold on to. we will call
+setRating(hoverState || index)
+
+- so for each individual star the hoverstate is initialy 0. when we hover over something, that state is then
+going to be set to the current star index. onClick we are going to set the rating to the current index, 0-5
+-initialy our star has a hover state of 0 and a rating of 0 but when we click we will set a rating to an
+index value.
+- we also pass the star a starId={i},
+
+- ok so lets figure out what the heck is happening
+
+part 1) getting set up:
+1)we create the star component with the svg and the coresponding css to make it look somewhat nice,
+2)export it and import it into the component that is going to use it.
+3) create a constant called stars and set it equal to an array with 5 variables in it(# of vars depends on how many stars you want)
+4) map over the stars constant and have it render a start component
+
+part 2) the states:
+1)create a state called hoverState. this will be used with onMouseEnter and onMouseLeave. onMouseEnter we will setHoverState(index)
+and onMouseLeave(0). This means that when we hover over the a star, that hoverState will be set to the index,
+the first star will have a hover state of 0 and the second star will have a hover state of 1. This will be
+important for the rating later on
+
+2)create a state called rating. This state sill hold the value of the ratings. this value will get set
+when you click on the star, so onClick={setRating(index)}. this means that when we click on the star
+we are going to set the rating to the value of the index. also, the rating value on the star will be set to
+rating={hoverState || rating }. this means that the rating value on the star will evalate to the rating
+over state is 0 and to the hoverstate otherwise. we will later use the rating to determine the class name
+for the star.
+- so the rating is always the hoverState until it gets clicked. that is also important for when choosing the
+className.
+3) create a property on the star component called starId. THis is going to be set to the index of the map()
+-this is also important for determining the className.
+
+part 3) getting the stars to change:
+1) destructor all of the things that were passed into the star component. onMouseEnter,onMouseLeave,
+onClick, rating,starId.
+
+ part 4) set them all to there appropriate places.
+-the onMouseEnter and leave are both put on the div containing
+the star component. so everytime we hover over or leave it is going to set the over state.
+-the onClick also gets set on the same container as the onMouse events. this onCLick event will set the
+rating state.
+
+part 5) setting the className:
+- this is the most important part, this is what everything else was building up to. we are going to create.
+- on the svg for the style prop we are going to set it equal to a variable called styleClass. this is what
+is going to change and let us have the desired coloring.
+-the last thing that we are going to do is the logic that will allow us to change the color of the stars
+-we eill go
+      if(rating >= starId){
+        styleClass= 'star-rating-filled'
+      }
+
+  - this says that if the rating( the props that was set on the star component) is greater than or equal to
+  the starId then change the styleClass to 'star-ratin-filled'. the rating will be greater than or equal
+  to when we either hover over it, or when we click it
+
+
+  - the hoverSTate is always changing but when we do not hover a star, the rating defaults back to the state
+  called rating. THis rating state gets set when we click on it.
+
+
+  -so now we have to create the api call that happens when we click something. Now I think is the time
+  to use functional programming to try and abstract away the api calls into there own function
+
+  - right so lets make 2 functions, one for the post request and one for the get request.
+  -actually I think that I want to create my own hook. lets read up on that a bit.
+
+  CUSTOM HOOKS:
+  - custom hooks let us extract component logic into reusable functions
+  - a custom Hook is a javaScript function whose name starts with 'use' and that may call other hooks
+  - each call to the custom hook gets isolated state.
+
+  - so I seem to have run into a problem when try to create my own custom hook, I think I will have to go back to the
+  form validation video to see what is happening again.

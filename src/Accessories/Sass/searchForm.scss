@@ -1,0 +1,39 @@
+div.form-container{
+  background-color: red;
+  width: 97%;
+  height: 140px;
+  margin: 0 auto;
+  position:relative;
+
+  form{
+
+    label{
+    }
+    input.search{
+      height: 36px;
+      width: 60%;
+      margin-left: 80px;
+      margin-top: 60px;
+      color:rgba(0,0,0,0.5);
+      border-radius: 30px;
+      outline: none;
+      border: 1px solid black;
+      font-size:15px;
+      padding: 10px 20px;
+
+    }
+    input.submit{
+      border: 1px solid black;
+      height: 36px;
+      width: 80px;
+      border-radius: 30px;
+      outline: none;
+      position: absolute;
+      top: 60px;
+      right: 25%;
+      cursor: pointer;
+      background-color: white;
+
+    }
+  }
+}

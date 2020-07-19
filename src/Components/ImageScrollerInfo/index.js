@@ -2,18 +2,24 @@ import React,{useState,useEffect} from 'react';
 import {useSpring,animated} from 'react-spring';
 
 import Star from '../Star'
+import {useApiPost} from '../../API/key'
 
 const ImageScrollerInfo =({poster_path,title,release_date,info})=>{
 
-  const [state,setState] = useState(false)
+ const {apiCall} = useApiPost('authentication/guest_session/new')
+
+  const [state,setState] = useState(false);
   const [rating,setRating] = useState(0);
-  const [hoverState,setHoverState] =useState(0)
+  const [hoverState,setHoverState] =useState(0);
   const stars = [1,2,3,4,5]
   const handleClick =()=>{
     setState(!state)
   }
-
-
+  const handleStarClick =async(index)=>{
+    await setRating(index * 2)
+    apiCall(info, rating)
+  }
+  
   return(
     <div>
         <img src={`https://image.tmdb.org/t/p/w220_and_h330_face/${poster_path}`} alt="movie paster" />
@@ -38,7 +44,7 @@ const ImageScrollerInfo =({poster_path,title,release_date,info})=>{
                                 rating={hoverState || rating}
                                 onMouseEnter={()=>setHoverState(index)}
                                 onMouseLeave={()=>setHoverState(0)}
-                                onClick={()=>setRating(index)}/>
+                                onClick={()=>handleStarClick(index +1)}/>
                       })
                     }
 
