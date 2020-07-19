@@ -782,3 +782,49 @@ is going to change and let us have the desired coloring.
 
   - so I seem to have run into a problem when try to create my own custom hook, I think I will have to go back to the
   form validation video to see what is happening again.
+  - my problem is that I can't call the hook from anywhere that is not a react hook or component
+
+  what do we want returned from our custom hook:
+  - so we need to return values from the form and then destructor those values out of the function in order
+  to use them.
+  - so what do we want to return from it ?
+  - could return a function that makes the api call right?
+  - so I guess a guest_session Id is required
+  - so i keep getting the status message of sesource could not be found, I guess I could try and figure out what
+  that means
+  - So I guess I can now go into the seach component of it. SO I want a search bar that will load the movie that we
+  have searched for, or the ones that loaded on load. So I guess it redirects us to a new page. that is kind
+  of cool.
+  -for first lets create a big old search bar
+
+  CREATING THE VALIDATED FORM:
+  1) turn the form into a controlled component
+
+  2) abstract things away to make the form more generic.
+  - this is where we are going to create a custom hook. In order to do this we have to pull out the onChange,
+  onSubmit,the states and then errors
+  - so we have created our own hook to abstract away all the generic form stuff, so we abstract away onChange,
+  useState,onSubmit
+  -well on submit we want it to check for errors. To make things more generic we want to abstract away the
+  specific kind of validation to another file
+
+  - now That we have that down, we can do some styling.
+
+
+  Making the api call with useEffect
+  - we want to make the api call and then redirect to a new page with the all the info
+  - so I need to make sure that I have the right path
+  -then I need to make sure that my api call hook works
+
+  - so what is going to happen when I search for something?
+  - lets follow the code.
+  1) as we type in the search for the state caled values will be updated, if it updates that means that it is a controlled componen t
+  and that it is working properly
+  2) when we hit submit, the handleSubmit() function should fire off. it is going to console.log('submitted') and then run
+  the setErrors(validation(values)) it will then update the errors state accordingly. it will also then setIsSubmitting(true)
+  3) the useEffect hook will run to check if the errors state is empty, if it is then it will run the apicall function
+  with the extension for the endpoint and the proper query. right now the useEffect hook will run any time the error or values
+  function is updated.
+  4) run the useAPI hook. Right now the useAPI will check to see if the second parameter is an object or a string. since it
+  is a string it will run the get method. Once it has done that it will console.log() the outcome. so we should get an console.log()
+  of just the data that is returned. 
