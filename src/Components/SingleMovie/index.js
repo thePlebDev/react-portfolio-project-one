@@ -16,9 +16,15 @@ const {apiData,errors} = useApiGetCall(`movie/${params.movieId}`)
             ?
           <h2>{errors}</h2>
             :
-          <div>
+          <div >
             <SingleMovieInfo info={params.movieId} state={apiData} />
             <CastSlider info={params.movieId} />
+            
+            <div >
+              <div className='cast-crew-link'>View Full Cast & Crew</div>
+              <div style={{'border-top':'1px solid #d7d7d7','margin':'0 auto',width:'80%'}}></div>
+              <h2>Hello again</h2>
+            </div>
           </div>
       }
     </div>

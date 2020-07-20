@@ -32,7 +32,6 @@ const ImageScroller = ({stream_type,name,token})=>{
                             poster_path={item.poster_path}
                             title={item.title}
                             release_date={item.release_date}
-                            token={token}
                             info={item.id} />
                     </div>
                )
