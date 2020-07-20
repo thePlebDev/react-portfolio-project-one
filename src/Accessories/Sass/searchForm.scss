@@ -37,3 +37,18 @@ div.form-container{
     }
   }
 }
+div.movie-search-container{
+  display: flex;
+  
+  width: 97%;
+  margin-bottom: 10px;
+  border: 1px solid red;
+  margin: 10px;
+
+  img{
+    margin-top: 0;
+    width: 100px;
+    height: 97px;
+    border-radius: 5px;
+  }
+}

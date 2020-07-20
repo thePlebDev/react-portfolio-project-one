@@ -1,0 +1,22 @@
+
+div.movie-info-container{
+  border: 1px solid red;
+
+  position: relative;
+  img{
+    margin-left: 60px;
+
+  }
+  .movie-info{
+    position: absolute;
+    width: 500px;
+    height: 100px;
+    color: black;
+    background-color: white;
+    opacity: 0.7;
+
+    bottom: 150px;;
+    left: 60px;
+    border-radius: 4px;
+  }
+}

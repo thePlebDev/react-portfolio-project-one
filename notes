@@ -824,7 +824,86 @@ is going to change and let us have the desired coloring.
   the setErrors(validation(values)) it will then update the errors state accordingly. it will also then setIsSubmitting(true)
   3) the useEffect hook will run to check if the errors state is empty, if it is then it will run the apicall function
   with the extension for the endpoint and the proper query. right now the useEffect hook will run any time the error or values
-  function is updated.
+  function is updated. actualy it only runs when we submit somehting
   4) run the useAPI hook. Right now the useAPI will check to see if the second parameter is an object or a string. since it
   is a string it will run the get method. Once it has done that it will console.log() the outcome. so we should get an console.log()
-  of just the data that is returned. 
+  of just the data that is returned.
+
+  - I think I want to make search a separate page. it actually shouldnt be that hard
+
+  - so lets get the individual pictures rolling out and then we can worry about the filters. also, lets try
+  to keep the css styling to a minimmum for right now. I want to read how I can better organize stuff
+  - now that we have the search working we are now going to figure out how to get the individual button images
+  to load. That is definitely a link to somewhere with a
+
+  - so what does the dependency array do on useEffect again?
+  - without a dependency array,effects run after every render and setting the state will trigger the effects
+  again
+  - effects always 'see' props and state from the render they were defined in.
+  - whenever we update the state, React calls our component. Each render result sees its new state.
+
+  -so now lets look at the react-dom-router and figure out how we ae going to get a link to the page
+  that we want.
+
+  ROUTE PARAMS:
+  -route params are parts of the URL that will change based on the object we want to display. we
+  can designate a dynamic portion of the URL to be matched by putting a colon(:) before it.
+  - so lets create a component and the route that we want in the app index file
+  - so now that we have the page we need to be able to grab what is in the url and make a request with it
+  - inside the react-router-dom library the user is passed to a prop called 'match' and inside match ther is another
+  prop called params . the params object will be holding the url parameters that we want
+
+  WHAT IS JAVASCRIPT MISSING:
+  - javascript is multi-paradignm language, meaning that it supports programming in many different styles. Other
+  styles supported by Javascript include procedural(imperative) programming, object-oriented programing, where
+  objects are the primary building black not functions and of course functional programming.
+  - the disadvantage of a multi-paradigm language is that imperative and object-oriented programming tend to
+  imply that almost everything needs to be mutable.
+
+  HIGHER-ORDER COMPONENTS:
+  -takes a component and returns a new component
+  - in a large app, the same pattern so subscribing to dataSource will occur over and over again. We Want to
+  abstract that allows us to define this logic in a single place and share it across many components. This is
+  where higher-order components excel.
+  - we can write a function that creates components and have it subscribe to an external data source. this
+  function will accept as on of its arguments a child component that receives the subscribed data as a prop.
+  - so in this example the component that gets put into the function gets the subsribed data as a prop
+  - so for us we would have a function that makes a get api call and then have it pass the information to
+  down to the component that we pass as a component.
+  - so we would be creating a function that takes two arguments, the component as the first argument and the
+  datasource as the second argument
+
+  - so for us it would be still be just the component and then the apicall data  as the second argument, but it
+  would just be the function we don't have to call it yet. the api call would get called inside the HOC and
+  then we assign that to a state value and then that values gets passed back into the component as a prop
+  - so the HOC just returns the compoennt that was passed in with the state data that was assigned
+  -The HOC doesn't modify the input component, nor does it use inheritance to copy its behavior. Rather
+  a HOC composes the original component by wrapping it in a container component. A HOC is a pure function with
+  zero side-effects.
+  - so I think the main benefit to this is that it creates better isolation and reusebility for things
+
+  - so we would use a HOC is an advances technique in React for reusing component logic.
+  -so maybe we can achieve the samething with a custom hook?
+
+  CUSTOM HOOKS:
+  - building your own Hooks lets you extract component logic into reuseable functions
+  - creating a custom hook solves many of the same problems that HOC solve but without forcing us to add
+  more components to the tree.
+  - a custom hook is Javascript function whose name starts with 'use' and that may call other hooks
+  - so the main idea of our hook would be to make an api call and then we would want it to return the data
+  that it made the call with
+  - so we create a function and inside of it we have the useEffect hook and inside that hook we would
+  want to call the api call with axios
+
+  -ok so are definetly going to use a custom hook for the api call then.
+  - stateless functions = functions that given the same input return the same output.
+-I think I should make my hooks simpler and break them down into two different hooks for the api calls.
+- also every custom hook has the useEffect make the actual call that allows it to do what ever. I guess
+this makes sense, then we just have to call the hook to get the data. OK I can beleive that. I still want
+to read more on useEffect to get a better grasp on it.
+
+USE EFFECT:
+- lets us perform side effects in functional components
+- when we use the useEffect hook, we are telling react that we want to do something after render.
+- by default useEffect runs after every update. so when we see use effect we should say after render run
+useEffect.
