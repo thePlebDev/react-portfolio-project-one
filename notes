@@ -907,3 +907,8 @@ USE EFFECT:
 - when we use the useEffect hook, we are telling react that we want to do something after render.
 - by default useEffect runs after every update. so when we see use effect we should say after render run
 useEffect.
+
+- so now I want to create a slider component that will have the case and will slide based on current cast members
+- so first we are going to create a component that create a slide for each cast member
+- so we only want to make a cast slider for the first 8 and then we want to have a button to be able to view more
+- so we should look at array functions other than map in order to do this.

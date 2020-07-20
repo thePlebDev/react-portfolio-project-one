@@ -1,15 +1,14 @@
 import React from 'react';
 
 import SingleMovieInfo from '../SingleMovieInfo';
+import CastSlider from '../CastSlider';
 
 import {useApiGetCall} from '../../Hooks/APICall';
 
 const SingleMovie = ({match:{params}})=>{
 
-// should console.log() out the data that we got back from the response
+// abstract away the api call.
 const {apiData,errors} = useApiGetCall(`movie/${params.movieId}`)
-
-
   return(
     <div>
       {
@@ -17,7 +16,10 @@ const {apiData,errors} = useApiGetCall(`movie/${params.movieId}`)
             ?
           <h2>{errors}</h2>
             :
-          <SingleMovieInfo info={params.movieId} state={apiData} />
+          <div>
+            <SingleMovieInfo info={params.movieId} state={apiData} />
+            <CastSlider info={params.movieId} />
+          </div>
       }
     </div>
   )
