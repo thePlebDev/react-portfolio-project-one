@@ -4,7 +4,6 @@ import React from 'react';
 
 
 const SingleMovieInfo =({info,state})=>{
-  console.log(state)
   return(
     <div>
       {

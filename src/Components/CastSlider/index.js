@@ -29,7 +29,7 @@ const CastSlider = ({info})=>{
             :
             <h1>Nothing here</h1>
         }
-
+        
     </div>
   )
 }

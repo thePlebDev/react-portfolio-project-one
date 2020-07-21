@@ -40,7 +40,6 @@ const useApiGetCall =(extension,/*optional-->*/queryParam)=>{
       .catch(err=>setErrors('Opps, looks like we had a slight error. Head back and try again'))
   },[extension,request])
 
-
   return{
     apiData,
     errors
