@@ -1,12 +1,14 @@
 import React,{useState} from 'react';
 import {Link} from 'react-router-dom';
 
+import SearchBoxSlideShow from '../SeachBoxSlideShow';
+
 import useForm from '../../Hooks/FormValidation';
 import validation from './validation';
 
 const SearchBox = ()=>{
 const {handleChange,handleSubmit,values,errors,searchValue} =useForm(validation)
-console.log(searchValue)
+
 
 
   return(
@@ -19,7 +21,6 @@ console.log(searchValue)
             </label>
             <input type='submit' value='Submit' className='submit'/>
           </form>
-
         </div>
 
         {
@@ -42,8 +43,6 @@ console.log(searchValue)
               :
               ''
       }
-
-
     </div>
   )
 }
