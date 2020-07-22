@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 
 import SingleMovieInfo from '../SingleMovieInfo';
 import CastSlider from '../CastSlider';
@@ -20,10 +21,12 @@ const {apiData,errors} = useApiGetCall(`movie/${params.movieId}`)
             <SingleMovieInfo info={params.movieId} state={apiData} />
             <CastSlider info={params.movieId} />
             <div >
-              <div className='cast-crew-link'>View Full Cast & Crew</div>
-              <div style={{'borderTop':'1px solid #d7d7d7','margin':'10px auto',width:'80%'}}></div>
+              <Link to={`/fullCast/${params.movieId}`}>
+                <div className='cast-crew-link'>View Full Cast & Crew</div>
+                <div style={{'borderTop':'1px solid #d7d7d7','margin':'10px auto',width:'80%'}}></div>
+              </Link>
             </div>
-            <SimularMovies info={params.movieId} />
+              <SimularMovies info={params.movieId} />
           </div>
       }
     </div>
